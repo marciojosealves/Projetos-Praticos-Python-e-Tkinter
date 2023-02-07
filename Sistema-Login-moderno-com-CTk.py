@@ -2,6 +2,7 @@
 
 import customtkinter as ctk
 from tkinter import *
+from tkinter import messagebox
 
 janela = ctk.CTk()
 
@@ -55,48 +56,67 @@ class Aplicacao():
         marcador_checagem = ctk.CTkCheckBox(
             master=login_frame, text='Lembrar depois.').place(x=25, y=245)
 
+        def mensagem_login():
+
+            mensagem_login_sucesso = messagebox.showinfo(
+                title='Resultado do Login', message='Login realizado com Sucesso!')
+
         botao_login = ctk.CTkButton(
-            master=login_frame, text='LOGIN', width=300, fg_color='#d75413', hover_color='#ff8000').place(x=25, y=285)
+            master=login_frame, text='LOGIN', width=300, fg_color='#d75413', hover_color='#ff8000', command=mensagem_login).place(x=25, y=285)
 
         label_resgistro = ctk.CTkLabel(
             master=login_frame, text='Faça sau conta.'). place(x=25, y=325)
-        
+
         def janela_cadastro():
             # Remover janela de login
             login_frame.pack_forget()
 
-            #Criando janela de cadastro so Usuário
+            # Criando janela de cadastro so Usuário
             registro_frame = ctk.CTkFrame(master=janela, width=350, height=396)
             registro_frame.pack(side=RIGHT)
 
             nome_frame_registro = ctk.CTkLabel(master=registro_frame, text=('Registro no sistema'), font=('Arvo', 20)).place(
-            x=25, y=5)
+                x=25, y=5)
 
-            frase_obrigatoria = ctk.CTkLabel(master=registro_frame, text=('Insira todos os dados corretos.'), font=('Arvo', 15),text_color='#d75413' ).place(x=25, y=35)
+            frase_obrigatoria = ctk.CTkLabel(master=registro_frame, text=(
+                'Insira todos os dados corretos.'), font=('Arvo', 15), text_color='#d75413').place(x=25, y=35)
 
-            nome_usuario_registro = ctk.CTkEntry(master=registro_frame, placeholder_text=('Nome do Usuário'), font=('Arvo', 14), width=300).place(x=25, y=105)
-          
-            email_usuario_registro = ctk.CTkEntry(master=registro_frame, placeholder_text=('E-mail do Usuário'), font=('Arvo', 14), width=300).place(x=25, y=145)
-            
-            senha_usuario_registro = ctk.CTkEntry(master=registro_frame, placeholder_text=('Senha do Usuário'), font=('Arvo', 14), width=300, show='*' ).place(x=25, y=185)
+            nome_usuario_registro = ctk.CTkEntry(master=registro_frame, placeholder_text=(
+                'Nome do Usuário'), font=('Arvo', 14), width=300).place(x=25, y=105)
 
-            confirme_senha_registro = ctk.CTkEntry(master=registro_frame, placeholder_text=('Confirme Senha'), font=('Arvo', 14), width=300, show='*' ).place(x=25, y=225)
+            email_usuario_registro = ctk.CTkEntry(master=registro_frame, placeholder_text=(
+                'E-mail do Usuário'), font=('Arvo', 14), width=300).place(x=25, y=145)
 
-            marcador_checagem = ctk.CTkCheckBox(master=registro_frame, text='Aceito termos e condições de registro.').place(x=25, y=265)
+            senha_usuario_registro = ctk.CTkEntry(master=registro_frame, placeholder_text=(
+                'Senha do Usuário'), font=('Arvo', 14), width=300, show='*').place(x=25, y=185)
 
-            #Função para retorna na tela um vista anterior
+            confirme_senha_registro = ctk.CTkEntry(master=registro_frame, placeholder_text=(
+                'Confirme Senha'), font=('Arvo', 14), width=300, show='*').place(x=25, y=225)
+
+            marcador_checagem = ctk.CTkCheckBox(
+                master=registro_frame, text='Aceito termos e condições de registro.').place(x=25, y=265)
+
+            # Função para retorna na tela um vista anterior
             def voltar_login():
-                #Para remover frame de cadastro
+                # Para remover frame de cadastro
                 registro_frame.pack_forget()
 
-                #Traz o fremede login novamente
-                login_frame.pack(side=RIGHT) 
-            
-            voltar_janela = ctk.CTkButton(master=registro_frame, text='Voltar', width=145, fg_color='gray',hover_color='#989a91', command=voltar_login).place(x=25,y=325)
+                # Traz o fremede login novamente
+                login_frame.pack(side=RIGHT)
 
-            salvar_registro = ctk.CTkButton(master=registro_frame, text='Cadastro', width=145, fg_color='#d75413', hover_color='#ff8000').place(x=180,y=325)
+            voltar_janela = ctk.CTkButton(master=registro_frame, text='Voltar', width=145,
+                                          fg_color='gray', hover_color='#989a91', command=voltar_login).place(x=25, y=325)
 
-        botao_registro = ctk.CTkButton(master=login_frame, text='Cadastro', width=190, fg_color='#d75413', hover_color='#ff8000', command= janela_cadastro).place(x=135, y=325)
+            def savar_dados_usuario():
+
+                mensagem_cadastro = messagebox.showinfo(
+                    title='Resultado do Cadastro', message='Cadastro realizado com Sucesso!')
+
+            salvar_registro = ctk.CTkButton(master=registro_frame, text='Cadastro', width=145,
+                                            fg_color='#d75413', hover_color='#ff8000', command=savar_dados_usuario).place(x=180, y=325)
+
+        botao_registro = ctk.CTkButton(master=login_frame, text='Cadastro', width=190,
+                                       fg_color='#d75413', hover_color='#ff8000', command=janela_cadastro).place(x=135, y=325)
 
 
 Aplicacao()
