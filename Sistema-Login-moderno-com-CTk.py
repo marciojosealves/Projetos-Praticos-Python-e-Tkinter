@@ -60,8 +60,15 @@ class Aplicacao():
 
         label_resgistro = ctk.CTkLabel(
             master=login_frame, text='Faça sau conta.'). place(x=25, y=325)
+        
+        def janela_cadastro():
+            # Remover janela de login
+            login_frame.pack_forget()
+
+
+            pass
         botao_registro = ctk.CTkButton(master=login_frame, text='Cadastro', width=190,
-                                       fg_color='#d75413', hover_color='#ff8000').place(x=135, y=325)
+                                       fg_color='#d75413', hover_color='#ff8000', command= janela_cadastro).place(x=135, y=325)
 
 
 Aplicacao()
