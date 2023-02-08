@@ -2,7 +2,7 @@
 
 import customtkinter as ctk
 from tkinter import *
-import banco_dados_cadastro
+#import banco_dados_cadastro
 from tkinter import messagebox
 
 janela = ctk.CTk()
@@ -105,16 +105,19 @@ class Aplicacao():
                 # Traz o fremede login novamente
                 login_frame.pack(side=RIGHT)
 
-            voltar_janela = ctk.CTkButton(master=registro_frame, text='Voltar', width=145, fg_color='gray', hover_color='#989a91', command=voltar_login).place(x=25, y=325)
+            voltar_janela = ctk.CTkButton(master=registro_frame, text='Voltar', width=145,
+                                          fg_color='gray', hover_color='#989a91', command=voltar_login).place(x=25, y=325)
 
             def savar_dados_usuario():
 
                 mensagem_cadastro = messagebox.showinfo(
                     title='Resultado do Cadastro', message='Cadastro realizado com Sucesso!')
 
-            salvar_registro = ctk.CTkButton(master=registro_frame, text='Cadastro', width=145,fg_color='#d75413', hover_color='#ff8000', command=savar_dados_usuario).place(x=180, y=325)
+            salvar_registro = ctk.CTkButton(master=registro_frame, text='Cadastro', width=145,
+                                            fg_color='#d75413', hover_color='#ff8000', command=savar_dados_usuario).place(x=180, y=325)
 
-        botao_registro = ctk.CTkButton(master=login_frame, text='Cadastro', width=190, fg_color='#d75413', hover_color='#ff8000', command=janela_cadastro).place(x=135, y=325)
+        botao_registro = ctk.CTkButton(master=login_frame, text='Cadastro', width=190,
+                                       fg_color='#d75413', hover_color='#ff8000', command=janela_cadastro).place(x=135, y=325)
 
 
 Aplicacao()
