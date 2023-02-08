@@ -2,6 +2,7 @@
 
 import customtkinter as ctk
 from tkinter import *
+import banco_dados_cadastro
 from tkinter import messagebox
 
 janela = ctk.CTk()
