@@ -5,8 +5,16 @@ from tkinter import PhotoImage
 class aplicativo(ctk.CTk):
     def __init__(self):
         super().__init__()
+        self.tema()
         self.Configuracao_janela_principal()
         self.elementos_janela_basica()
+        #self.elementos_de_janela_cadastro()
+        #self.voltar_login()
+        
+
+    def tema(self):
+        ctk.set_appearance_mode('dark')
+        ctk.set_default_color_theme('dark-blue')
 
     # Configuração da janela principal
     def Configuracao_janela_principal(self):
@@ -53,8 +61,52 @@ class aplicativo(ctk.CTk):
         self.label_resgistro = ctk.CTkLabel(
             self.login_frame, text='Faça sua conta.'.upper(), font=('Arvo', 12)). place(x=25, y=325)
 
-        self.botao_registro = ctk.CTkButton(self.login_frame, text='Cadastro', width=180,
-                                            fg_color='#d75413', hover_color='#ff8000', font=('Arvo bold', 14), corner_radius=20).place(x=145, y=325)
+        self.botao_cadastro = ctk.CTkButton(self.login_frame, text='Cadastro', width=180,
+                                            fg_color='#d75413', hover_color='#ff8000', font=('Arvo bold', 14), corner_radius=20,command=self.elementos_de_janela_cadastro).place(x=145, y=325)
+
+    def elementos_de_janela_cadastro(self):
+         # Remover janela de login
+        self.login_frame.place_forget()
+        # Criando janela de cadastro so Usuário
+        
+        self.cadastro_frame = ctk.CTkFrame(self, width=350, height=396)
+        self.cadastro_frame.place(x=347, y=2)     
+
+        # frame do formulário de cadastro
+
+        self.nome_frame_registro = ctk.CTkLabel(self.cadastro_frame, text=('Registro no sistema'), font=('Arvo', 20)).place(x=25, y=5)
+
+        self.frase_obrigatoria = ctk.CTkLabel(self.cadastro_frame, text=(
+                'Insira todos os dados corretos.'), font=('Arvo', 15), text_color='#d75413').place(x=25, y=35)
+
+        self.nome_usuario_registro = ctk.CTkEntry(self.cadastro_frame, placeholder_text=(
+                'Nome do Usuário'), font=('Arvo', 14), width=300, corner_radius=15, border_color="#d75413").place(x=25, y=105)
+
+        self.email_usuario_registro = ctk.CTkEntry(self.cadastro_frame, placeholder_text=(
+                'E-mail do Usuário'), font=('Arvo', 14), width=300, corner_radius=15, border_color="#d75413").place(x=25, y=145)
+
+        self.senha_usuario_registro = ctk.CTkEntry(self.cadastro_frame, placeholder_text=(
+                'Senha do Usuário'), font=('Arvo', 14), width=300, show='*', corner_radius=15, border_color="#d75413").place(x=25, y=185)
+
+        self.confirme_senha_registro = ctk.CTkEntry(self.cadastro_frame, placeholder_text=(
+                'Confirme Senha'), font=('Arvo', 14), width=300, show='*', corner_radius=15, border_color="#d75413").place(x=25, y=225)
+        self.marcador_checagem = ctk.CTkCheckBox(
+                self.cadastro_frame, text='Mostrar senha.', corner_radius=20).place(x=25, y=265)
+        
+              
+        self.voltar_janela = ctk.CTkButton(self.cadastro_frame, text='Voltar', width=145,
+                                          fg_color='gray', hover_color='#989a91', command=self.elementos_janela_basica,font=('Arvo bold', 14), corner_radius=15).place(x=25, y=325)
+        
+        def savar_dados_usuario(self):
+
+                #self.mensagem_cadastro = messagebox.showinfo(
+                 #   title='Resultado do Cadastro', message='Cadastro realizado com Sucesso!')
+                 pass
+        
+        self.salvar_registro = ctk.CTkButton(self.cadastro_frame, text='Cadastro', width=145,
+                                            fg_color='#d75413', hover_color='#ff8000', command=savar_dados_usuario,font=('Arvo bold', 14),corner_radius=15).place(x=180, y=325)
+        
+   
 
 
 if __name__ == "__main__":
