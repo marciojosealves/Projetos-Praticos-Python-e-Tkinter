@@ -1,8 +1,69 @@
 import customtkinter as ctk
-from tkinter import PhotoImage
+from tkinter import *
+import sqlite3
 
 
-class aplicativo(ctk.CTk):
+
+class lado_servidor():
+     
+    def conexao_banco_dados(self):
+          self.faca_conexao=sqlite3.connect("Sistema_Login_Cadastro.db")
+          self.cursor=self.faca_conexao.cursor()
+          print("Banco de dados conectado!")
+        
+ 
+    def desconexao_banco_dados(self):
+        self.faca_conexao.close()
+        print("Banco de dados desconectado!")
+
+    def iniciar_tabela_dados(self):
+         self.conexao_banco_dados()
+
+         self.cursor.execute("""
+            
+            CREATE TABLE IF NOT EXISTS Usuarios(
+            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+            Nome_usuario TEXT NOT NULL,
+            Email_usuario TEXT NOT NULL,
+            Senha_usuario TEXT NOT NULL,
+            Confirme_senha_usuario TEXT NOT NULL
+
+            );
+         
+         """)#Nome_usuario,Email_usuario e outros elementos são as colunas na tabela.
+         self.faca_conexao.commit()
+         print("Tabela criada no banco de dados com sucesso!")
+         self.desconexao_banco_dados()
+
+    def cadastrar_usuario_banco_dados(self, master=None):
+
+        #Para habilitar a função get() do CTkEntry
+        self.nome_usuario_registro = Entry(master)      
+        self.email_usuario_registro = Entry(master)       
+        self.senha_usuario_registro = Entry(master)        
+        self.confirme_senha_registro = Entry(master)
+       
+        self.nome_usuario_entrada = self.nome_usuario_registro.get()
+        self.email_usuario_entrada = self.email_usuario_registro.get()
+        self.senha_usuario_entrada = self.senha_usuario_registro.get()
+        self.confirme_senha_entrada = self.confirme_senha_registro.get()
+
+        #print(self.nome_usuario_entrada)
+
+        self.conexao_banco_dados()
+
+        self.cursor.execute("""
+
+            INSERT INTO Usuarios (Nome_usuario, Email_usuario, Senha_usuario, Confirme_senha_usuario)
+            VALUES (?,?,?,?)""", (self.nome_usuario_entrada,self.email_usuario_entrada,self.senha_usuario_entrada,self.confirme_senha_entrada))
+        
+        self.faca_conexao.commit()
+        print("Dados cadastrados com sucesso!")
+        self.desconexao_banco_dados()
+        
+
+
+class aplicativo(ctk.CTk,lado_servidor):
     def __init__(self):
         super().__init__()
         self.tema()
@@ -10,6 +71,7 @@ class aplicativo(ctk.CTk):
         self.elementos_janela_basica()
         #self.elementos_de_janela_cadastro()
         #self.voltar_login()
+        self.iniciar_tabela_dados()
         
 
     def tema(self):
@@ -18,9 +80,10 @@ class aplicativo(ctk.CTk):
 
     # Configuração da janela principal
     def Configuracao_janela_principal(self):
-        self.geometry("700x400")
-        self.title("Sistema de Login")
-        self.resizable(width=False, height=False)
+        self.wm_geometry("700x400")
+        self.wm_title("Sistema de Login")
+        self.wm_iconbitmap("logo-mjamf.ico")
+        self.wm_resizable(width=False, height=False)#com wm_resizable é itulizado o sistema atual
 
     def elementos_janela_basica(self):
         # Parte de trabalho relativa a imagem da tela.
@@ -97,16 +160,20 @@ class aplicativo(ctk.CTk):
         self.voltar_janela = ctk.CTkButton(self.cadastro_frame, text='Voltar', width=145,
                                           fg_color='gray', hover_color='#989a91', command=self.elementos_janela_basica,font=('Arvo bold', 14), corner_radius=15).place(x=25, y=325)
         
-        def savar_dados_usuario(self):
-
-                #self.mensagem_cadastro = messagebox.showinfo(
-                 #   title='Resultado do Cadastro', message='Cadastro realizado com Sucesso!')
-                 pass
-        
+       
         self.salvar_registro = ctk.CTkButton(self.cadastro_frame, text='Cadastro', width=145,
-                                            fg_color='#d75413', hover_color='#ff8000', command=savar_dados_usuario,font=('Arvo bold', 14),corner_radius=15).place(x=180, y=325)
+                                            fg_color='#d75413', hover_color='#ff8000',font=('Arvo bold', 14),corner_radius=15, command=self.cadastrar_usuario_banco_dados).place(x=180, y=325)
         
-   
+    def limpa_cadastro(self):             
+        self.nome_usuario_registro.delete(0, END)
+        self.email_usuario_registro.delete(0, END)
+        self.senha_usuario_registro.delete(0, END)
+        self.confirme_senha_registro.delete(0, END)
+
+    def limpa_login(self):         
+         self.nome_usuario_login.delete(0, END)
+         self.senha_usuario_login.delete(0, END)
+        
 
 
 if __name__ == "__main__":
