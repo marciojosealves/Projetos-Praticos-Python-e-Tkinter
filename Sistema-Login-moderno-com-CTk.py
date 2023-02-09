@@ -3,23 +3,21 @@ from tkinter import *
 import sqlite3
 
 
-
 class lado_servidor():
-     
+
     def conexao_banco_dados(self):
-          self.faca_conexao=sqlite3.connect("Sistema_Login_Cadastro.db")
-          self.cursor=self.faca_conexao.cursor()
-          print("Banco de dados conectado!")
-        
- 
+        self.faca_conexao = sqlite3.connect("Sistema_Login_Cadastro.db")
+        self.cursor = self.faca_conexao.cursor()
+        print("Banco de dados conectado!")
+
     def desconexao_banco_dados(self):
         self.faca_conexao.close()
         print("Banco de dados desconectado!")
 
     def iniciar_tabela_dados(self):
-         self.conexao_banco_dados()
+        self.conexao_banco_dados()
 
-         self.cursor.execute("""
+        self.cursor.execute("""
             
             CREATE TABLE IF NOT EXISTS Usuarios(
             Id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,49 +28,41 @@ class lado_servidor():
 
             );
          
-         """)#Nome_usuario,Email_usuario e outros elementos são as colunas na tabela.
-         self.faca_conexao.commit()
-         print("Tabela criada no banco de dados com sucesso!")
-         self.desconexao_banco_dados()
+         """)  # Nome_usuario,Email_usuario e outros elementos são as colunas na tabela.
+        self.faca_conexao.commit()
+        print("Tabela criada no banco de dados com sucesso!")
+        self.desconexao_banco_dados()
 
-    def cadastrar_usuario_banco_dados(self, master=None):
+    def cadastrar_usuario_banco_dados(self):
 
-        #Para habilitar a função get() do CTkEntry
-        self.nome_usuario_registro = Entry(master)      
-        self.email_usuario_registro = Entry(master)       
-        self.senha_usuario_registro = Entry(master)        
-        self.confirme_senha_registro = Entry(master)
-       
         self.nome_usuario_entrada = self.nome_usuario_registro.get()
         self.email_usuario_entrada = self.email_usuario_registro.get()
         self.senha_usuario_entrada = self.senha_usuario_registro.get()
         self.confirme_senha_entrada = self.confirme_senha_registro.get()
 
-        #print(self.nome_usuario_entrada)
+        print(self.nome_usuario_entrada)
 
-        self.conexao_banco_dados()
+        '''self.conexao_banco_dados()
 
         self.cursor.execute("""
 
             INSERT INTO Usuarios (Nome_usuario, Email_usuario, Senha_usuario, Confirme_senha_usuario)
-            VALUES (?,?,?,?)""", (self.nome_usuario_entrada,self.email_usuario_entrada,self.senha_usuario_entrada,self.confirme_senha_entrada))
-        
+            VALUES (?,?,?,?)""", (self.nome_usuario_entrada, self.email_usuario_entrada, self.senha_usuario_entrada, self.confirme_senha_entrada))
+
         self.faca_conexao.commit()
         print("Dados cadastrados com sucesso!")
-        self.desconexao_banco_dados()
-        
+        self.desconexao_banco_dados()'''
 
 
-class aplicativo(ctk.CTk,lado_servidor):
+class aplicativo(ctk.CTk, lado_servidor):
     def __init__(self):
         super().__init__()
         self.tema()
         self.Configuracao_janela_principal()
         self.elementos_janela_basica()
-        #self.elementos_de_janela_cadastro()
-        #self.voltar_login()
+        # self.elementos_de_janela_cadastro()
+        # self.voltar_login()
         self.iniciar_tabela_dados()
-        
 
     def tema(self):
         ctk.set_appearance_mode('dark')
@@ -83,7 +73,8 @@ class aplicativo(ctk.CTk,lado_servidor):
         self.wm_geometry("700x400")
         self.wm_title("Sistema de Login")
         self.wm_iconbitmap("logo-mjamf.ico")
-        self.wm_resizable(width=False, height=False)#com wm_resizable é itulizado o sistema atual
+        # com wm_resizable é itulizado o sistema atual
+        self.wm_resizable(width=False, height=False)
 
     def elementos_janela_basica(self):
         # Parte de trabalho relativa a imagem da tela.
@@ -91,11 +82,13 @@ class aplicativo(ctk.CTk,lado_servidor):
 
         # text = None ou '' para retirar o CTkLabel
         self.label_imagem_janela = ctk.CTkLabel(
-            self, image=self.imagem_janela, text=None).place(x=45, y=100)
+            self, image=self.imagem_janela, text=None)
+        self.label_imagem_janela.grid(row=1, column=0, padx=40, pady=40)
 
         # Título da janela
         self.label_titulo = ctk.CTkLabel(self, text='Entre no Sistema no MJAMF\n para Login ou cadstro.', font=(
-            'Arvo bold', 18), text_color='#d75413').place(x=45, y=10)
+            'Arvo bold', 18), text_color='#d75413')
+        self.label_titulo.grid(row=0, column=0, padx=1, pady=20)
 
         # frame do formulário de login
         self.login_frame = ctk.CTkFrame(self, width=350, height=396)
@@ -103,77 +96,97 @@ class aplicativo(ctk.CTk,lado_servidor):
 
         # Frame Widgets e elementos de inclusão de dados
         self.nome_frame = ctk.CTkLabel(self.login_frame, text=(
-            'Sistema de Login'), font=('Arvo bold', 20)).place(x=90, y=45)
+            'Sistema de Login'), font=('Arvo bold', 20))
+        self.nome_frame.grid(row=0, column=0, padx=10, pady=10)
 
         self.nome_usuario_login = ctk.CTkEntry(self.login_frame, placeholder_text=(
-            'Nome do Usuário'), font=('Arvo', 14), width=300, corner_radius=15, border_color="#d75413").place(x=25, y=105)
+            'Nome do Usuário'), font=('Arvo', 14), width=300, corner_radius=15, border_color="#d75413")
+        self.nome_usuario_login.grid(row=1, column=0, padx=15, pady=10)
+
         label_nome_usuario = ctk.CTkLabel(
-            self.login_frame, text='*O campo Nome do Usuário é obrigatório!', font=('Arvo', 10), text_color='#d75413').place(x=25, y=135)
+            self.login_frame, text='*O campo Nome do Usuário é obrigatório!', font=('Arvo', 10), text_color='#d75413')
+        label_nome_usuario.grid(row=2, column=0, padx=15, pady=1)
 
         self.senha_usuario_login = ctk.CTkEntry(self.login_frame, placeholder_text=(
-            'Senha do Usuário'), font=('Arvo', 14), width=300, show='*', corner_radius=15, border_color="#d75413").place(x=25, y=175)
+            'Senha do Usuário'), font=('Arvo', 14), width=300, show='*', corner_radius=15, border_color="#d75413")
+        self.senha_usuario_login.grid(row=3, column=0, padx=15, pady=10)
+
         label_senha_usuario = ctk.CTkLabel(
-            self.login_frame, text='*O campo Senha do Usuário é obrigatório!', font=('Arvo', 10), text_color='#d75413').place(x=25, y=205)
+            self.login_frame, text='*O campo Senha do Usuário é obrigatório!', font=('Arvo', 10), text_color='#d75413')
+        label_senha_usuario.grid(row=4, column=0, padx=15, pady=1)
 
         self.marcador_checagem_senha_login = ctk.CTkCheckBox(
-            self.login_frame, text='Mostrar senha.', font=('Arvo', 14), corner_radius=20).place(x=25, y=245)
+            self.login_frame, text='Mostrar senha.', font=('Arvo', 14), corner_radius=20)
+        self.marcador_checagem_senha_login.grid(
+            row=5, column=0, padx=10, pady=1)
 
         self.botao_login = ctk.CTkButton(
-            self.login_frame, text='LOGIN', width=300, font=('Arvo', 16), fg_color='#d75413', hover_color='#ff8000', corner_radius=15).place(x=25, y=285)
+            self.login_frame, text='LOGIN', width=300, font=('Arvo', 16), fg_color='#d75413', hover_color='#ff8000', corner_radius=15)
+        self.botao_login.grid(row=6, column=0, padx=15, pady=15)
 
         self.label_resgistro = ctk.CTkLabel(
-            self.login_frame, text='Faça sua conta.'.upper(), font=('Arvo', 12)). place(x=25, y=325)
+            self.login_frame, text='Faça sua conta.'.upper(), font=('Arvo', 12))
+        self.label_resgistro.grid(row=7, column=0, padx=15, pady=5)
 
         self.botao_cadastro = ctk.CTkButton(self.login_frame, text='Cadastro', width=180,
-                                            fg_color='#d75413', hover_color='#ff8000', font=('Arvo bold', 14), corner_radius=20,command=self.elementos_de_janela_cadastro).place(x=145, y=325)
+                                            fg_color='#d75413', hover_color='#ff8000', font=('Arvo bold', 14), corner_radius=20, command=self.elementos_de_janela_cadastro)
+        self.botao_cadastro.grid(row=8, column=0, padx=10, pady=5)
 
     def elementos_de_janela_cadastro(self):
-         # Remover janela de login
+        # Remover janela de login
         self.login_frame.place_forget()
         # Criando janela de cadastro so Usuário
-        
+
         self.cadastro_frame = ctk.CTkFrame(self, width=350, height=396)
-        self.cadastro_frame.place(x=347, y=2)     
+        self.cadastro_frame.place(x=347, y=2)
 
         # frame do formulário de cadastro
 
-        self.nome_frame_registro = ctk.CTkLabel(self.cadastro_frame, text=('Registro no sistema'), font=('Arvo', 20)).place(x=25, y=5)
+        self.nome_frame_registro = ctk.CTkLabel(self.cadastro_frame, text=(
+            'Registro no sistema'), font=('Arvo', 20))
+        self.nome_frame_registro.grid(row=0, column=0, padx=10, pady=5)
 
         self.frase_obrigatoria = ctk.CTkLabel(self.cadastro_frame, text=(
-                'Insira todos os dados corretos.'), font=('Arvo', 15), text_color='#d75413').place(x=25, y=35)
+            'Insira todos os dados corretos.'), font=('Arvo', 15), text_color='#d75413')
+        self.frase_obrigatoria.grid(row=1, column=0, padx=10, pady=5)
 
         self.nome_usuario_registro = ctk.CTkEntry(self.cadastro_frame, placeholder_text=(
-                'Nome do Usuário'), font=('Arvo', 14), width=300, corner_radius=15, border_color="#d75413").place(x=25, y=105)
+            'Nome do Usuário'), font=('Arvo', 14), width=300, corner_radius=15, border_color="#d75413")
+        self.nome_usuario_registro.grid(row=2, column=0, padx=10, pady=2)
 
         self.email_usuario_registro = ctk.CTkEntry(self.cadastro_frame, placeholder_text=(
-                'E-mail do Usuário'), font=('Arvo', 14), width=300, corner_radius=15, border_color="#d75413").place(x=25, y=145)
+            'E-mail do Usuário'), font=('Arvo', 14), width=300, corner_radius=15, border_color="#d75413")
+        self.email_usuario_registro.grid(row=3, column=0, padx=10, pady=2)
 
         self.senha_usuario_registro = ctk.CTkEntry(self.cadastro_frame, placeholder_text=(
-                'Senha do Usuário'), font=('Arvo', 14), width=300, show='*', corner_radius=15, border_color="#d75413").place(x=25, y=185)
+            'Senha do Usuário'), font=('Arvo', 14), width=300, show='*', corner_radius=15, border_color="#d75413")
+        self.senha_usuario_registro.grid(row=4, column=0, padx=10, pady=2)
 
         self.confirme_senha_registro = ctk.CTkEntry(self.cadastro_frame, placeholder_text=(
-                'Confirme Senha'), font=('Arvo', 14), width=300, show='*', corner_radius=15, border_color="#d75413").place(x=25, y=225)
+            'Confirme Senha'), font=('Arvo', 14), width=300, show='*', corner_radius=15, border_color="#d75413")
+        self.confirme_senha_registro.grid(row=5, column=0, padx=10, pady=2)
+
         self.marcador_checagem = ctk.CTkCheckBox(
-                self.cadastro_frame, text='Mostrar senha.', corner_radius=20).place(x=25, y=265)
-        
-              
+            self.cadastro_frame, text='Mostrar senha.', corner_radius=20)
+        self.marcador_checagem.grid(row=6, column=0, padx=10, pady=5)
+
         self.voltar_janela = ctk.CTkButton(self.cadastro_frame, text='Voltar', width=145,
-                                          fg_color='gray', hover_color='#989a91', command=self.elementos_janela_basica,font=('Arvo bold', 14), corner_radius=15).place(x=25, y=325)
-        
-       
-        self.salvar_registro = ctk.CTkButton(self.cadastro_frame, text='Cadastro', width=145,
-                                            fg_color='#d75413', hover_color='#ff8000',font=('Arvo bold', 14),corner_radius=15, command=self.cadastrar_usuario_banco_dados).place(x=180, y=325)
-        
-    def limpa_cadastro(self):             
+                                           fg_color='gray', hover_color='#989a91', command=self.elementos_janela_basica, font=('Arvo bold', 14), corner_radius=15)
+        self.voltar_janela.grid(row=8, column=0, padx=10, pady=15)
+
+        self.salvar_registro = ctk.CTkButton(self.cadastro_frame, text='Cadastro', width=300,
+                                             fg_color='#d75413', hover_color='#ff8000', font=('Arvo bold', 14), corner_radius=15, command=self.cadastrar_usuario_banco_dados)
+        self.salvar_registro.grid(row=7, column=0, padx=10, pady=25)
+
+    def limpa_cadastro(self):
         self.nome_usuario_registro.delete(0, END)
         self.email_usuario_registro.delete(0, END)
         self.senha_usuario_registro.delete(0, END)
         self.confirme_senha_registro.delete(0, END)
 
-    def limpa_login(self):         
-         self.nome_usuario_login.delete(0, END)
-         self.senha_usuario_login.delete(0, END)
-        
+    def limpa_login(self):
+        self.nome_usuario_login.delete(0, END)
+        self.senha_usuario_login.delete(0, END)
 
 
 if __name__ == "__main__":
