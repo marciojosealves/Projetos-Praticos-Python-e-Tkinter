@@ -40,9 +40,9 @@ class lado_servidor():
         self.senha_usuario_entrada = self.senha_usuario_registro.get()
         self.confirme_senha_entrada = self.confirme_senha_registro.get()
 
-        print(self.nome_usuario_entrada)
+        #print(self.nome_usuario_entrada)
 
-        '''self.conexao_banco_dados()
+        self.conexao_banco_dados()
 
         self.cursor.execute("""
 
@@ -51,7 +51,7 @@ class lado_servidor():
 
         self.faca_conexao.commit()
         print("Dados cadastrados com sucesso!")
-        self.desconexao_banco_dados()'''
+        self.desconexao_banco_dados()
 
 
 class aplicativo(ctk.CTk, lado_servidor):
