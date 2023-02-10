@@ -2,8 +2,7 @@ import customtkinter as ctk
 from tkinter import *
 import sqlite3
 from tkinter import messagebox
-# letras ASCII (todas as letras de "a" a "z", maiúsculas e minúsculas)
-from string import ascii_letters
+from string import ascii_letters # letras ASCII (todas as letras de "a" a "z", maiúsculas e minúsculas)
 
 
 class lado_servidor():
@@ -51,32 +50,25 @@ class lado_servidor():
             VALUES (?,?,?,?)""", (self.nome_usuario_entrada, self.email_usuario_entrada, self.senha_usuario_entrada, self.confirme_senha_entrada))
 
         try:
-            if (self.nome_usuario_entrada == "" or self.email_usuario_entrada == "" or self.senha_usuario_entrada == "" or self.confirme_senha_entrada == ""):
-                messagebox.showerror(
-                    title="Sistema de Login", message="Todos os campos devem ser preenchidos!")
+            if(self.nome_usuario_entrada == "" or self.email_usuario_entrada == "" or self.senha_usuario_entrada == "" or self.confirme_senha_entrada == ""):
+                messagebox.showerror(title= "Sistema de Login",message="Todos os campos devem ser preenchidos!")
             elif all(caracter in (ascii_letters + 'áéíóú') for caracter in self.nome_usuario_entrada):
-                # (ascii_letters + 'áéíóú') acrescenta o espaço e algumas letras acentuadas, adicione tudo que precisar aqui
-                messagebox.showwarning(
-                    title="Sistema de Login", message="Por favor digite um nome válido com pelo menos,\nnome e último nome.\n(somente letras e espaços)")
-            elif (len(self.senha_usuario_entrada) < 4):
-                messagebox.showwarning(
-                    title="Sistema de Login", message=" O senha deve ter pelo menos quatro caracteres.")
-            elif (self.senha_usuario_entrada != self.confirme_senha_entrada):
-                messagebox.showerror(
-                    title="Sistema de Login", message="Senhas não são iguais!")
+                messagebox.showwarning(title="Sistema de Login", message="Por favor digite um nome válido com pelo menos,\nnome e último nome.\n(somente letras e espaços)") # (ascii_letters + 'áéíóú') acrescenta o espaço e algumas letras acentuadas, adicione tudo que precisar aqui
+            elif(len(self.senha_usuario_entrada)<4):
+                messagebox.showwarning(title="Sistema de Login", message=" O senha deve ter pelo menos quatro caracteres.")
+            elif(self.senha_usuario_entrada != self.confirme_senha_entrada):
+                messagebox.showerror(title="Sistema de Login", message="Senhas não são iguais!")
             else:
                 self.faca_conexao.commit()
-                messagebox.showinfo(
-                    title="sistema de Login", message=f"Dados cadastrados com sucesso!\n{self.nome_usuario_entrada} seja BEM-VINDO!")
+                messagebox.showinfo(title="sistema de Login", message=f"Dados cadastrados com sucesso!\n{self.nome_usuario_entrada} seja BEM-VINDO!")
                 print("Dados cadastrados com sucesso!")
                 self.desconexao_banco_dados()
-                self.limpa_cadastro()
-
+                self.limpa_cadastro() 
+            
         except:
-            messagebox.showerror(
-                title="Sistema de Login", message="Erro no processamento do seu pedido!\n Tente novamente mais tarde.")
+            messagebox.showerror(title="Sistema de Login", message="Erro no processamento do seu pedido!\n Tente novamente mais tarde.")
             self.desconexao_banco_dados()
-
+        
     def verificar_login(self):
 
         self.nome_usuario_login_verifica = self.nome_usuario_login.get()
@@ -87,28 +79,23 @@ class lado_servidor():
         self.cursor.execute("""
 
             SELECT * FROM Usuarios WHERE (Nome_usuario = ? AND Senha_usuario = ?)""", (self.nome_usuario_login_verifica, self.senha_usuario_login_verifica))
-
-        # Percorre a tabela Usuarios é indicado .fetchone(),mas pode usar .fetchall()
-        self.verifica_dados = self.cursor.fetchone()
+         
+        self.verifica_dados = self.cursor.fetchone() # Percorre a tabela Usuarios é indicado .fetchone(),mas pode usar .fetchall()
 
         try:
-            if (self.nome_usuario_login_verifica == "" or self.senha_usuario_login_verifica == ""):
-                messagebox.showwarning(
-                    title="Sistema de Login", message="Os campos devem ser todos preenchidos.")
-            elif (self.nome_usuario_login_verifica in self.verifica_dados and self.senha_usuario_login_verifica in self.verifica_dados):
-                messagebox.showinfo(
-                    title="Sistema de Login", message=f"BEM-VINDO {self.nome_usuario_login_verifica}\n Login realizado com sucesso.")
-                self.desconexao_banco_dados()
-                # Se hovesse um painel, seria encaminhado para ele.
-                self.limpa_login()
-
+            if(self.nome_usuario_login_verifica == "" or self.senha_usuario_login_verifica == ""):
+                messagebox.showwarning(title = "Sistema de Login", message = "Os campos devem ser todos preenchidos.")
+            elif(self.nome_usuario_login_verifica in self.verifica_dados and self.senha_usuario_login_verifica in self.verifica_dados):
+                 messagebox.showinfo( title = "Sistema de Login", message = f"BEM-VINDO {self.nome_usuario_login_verifica}\n Login realizado com sucesso.")
+                 self.desconexao_banco_dados()
+                 self.limpa_login()# Se hovesse um painel, seria encaminhado para ele.
+            
         except:
-            messagebox.showerror(
-                title="Sistema de Login", message="Usuário não encontrado no sistema.\nVerifique seus dados ou faça seu cadastro.")
-            self.desconexao_banco_dados()
-            # Aqui não limpamos os dados para usuário verificar se digitou corretamente.
-
-
+            messagebox.showerror(title="Sistema de Login", message="Usuário não encontrado no sistema.\nVerifique seus dados ou faça seu cadastro.")
+            self.desconexao_banco_dados() 
+            #Aqui não limpamos os dados para usuário verificar se digitou corretamente.        
+           
+ 
 class aplicativo(ctk.CTk, lado_servidor):
     def __init__(self):
         super().__init__()
