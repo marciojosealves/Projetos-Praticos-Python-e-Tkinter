@@ -44,10 +44,10 @@ class lado_servidor():
 
         self.conexao_banco_dados()
 
-        self.cursor.execute("""
+        '''self.cursor.execute("""
 
             INSERT INTO Usuarios (Nome_usuario, Email_usuario, Senha_usuario, Confirme_senha_usuario)
-            VALUES (?,?,?,?)""", (self.nome_usuario_entrada, self.email_usuario_entrada, self.senha_usuario_entrada, self.confirme_senha_entrada))
+            VALUES (?,?,?,?)""", (self.nome_usuario_entrada, self.email_usuario_entrada, self.senha_usuario_entrada, self.confirme_senha_entrada))'''
 
         try:
             if(self.nome_usuario_entrada == "" or self.email_usuario_entrada == "" or self.senha_usuario_entrada == "" or self.confirme_senha_entrada == ""):
@@ -158,7 +158,7 @@ class aplicativo(ctk.CTk, lado_servidor):
         label_senha_usuario.grid(row=4, column=0, padx=15, pady=1)
 
         self.marcador_checagem_senha_login = ctk.CTkCheckBox(
-            self.login_frame, text='Mostrar senha.', font=('Arvo', 14), corner_radius=20)
+            self.login_frame, text='Mostrar senha.', font=('Arvo', 14), corner_radius=20, command=self.mostrar_senha_login)
         self.marcador_checagem_senha_login.grid(
             row=5, column=0, padx=10, pady=1)
 
@@ -209,7 +209,7 @@ class aplicativo(ctk.CTk, lado_servidor):
         self.confirme_senha_registro.grid(row=5, column=0, padx=10, pady=2)
 
         self.marcador_checagem = ctk.CTkCheckBox(
-            self.cadastro_frame, text='Mostrar senha.', corner_radius=20)
+            self.cadastro_frame, text='Mostrar senha.', corner_radius=20,command=self.mostrar_senha_cadastro)
         self.marcador_checagem.grid(row=6, column=0, padx=10, pady=5)
 
         self.voltar_janela = ctk.CTkButton(self.cadastro_frame, text='Voltar', width=145,
@@ -229,6 +229,23 @@ class aplicativo(ctk.CTk, lado_servidor):
     def limpa_login(self):
         self.nome_usuario_login.delete(0, END)
         self.senha_usuario_login.delete(0, END)
+    
+
+    def mostrar_senha_login(self):
+        if(self.senha_usuario_login).cget("show")=="*":
+            self.senha_usuario_login.configure(show="")
+        else:
+            self.senha_usuario_login.configure(show="*")   
+
+    def mostrar_senha_cadastro(self):
+        if (self.senha_usuario_registro.cget("show")=="*" and self.confirme_senha_registro.cget("show")=="*"):
+            self.senha_usuario_registro.configure(show="")
+            self.confirme_senha_registro.configure(show="")
+        else:
+            self.senha_usuario_registro.configure(show="*")    
+            self.confirme_senha_registro.configure(show="*")       
+
+
 
 
 if __name__ == "__main__":
