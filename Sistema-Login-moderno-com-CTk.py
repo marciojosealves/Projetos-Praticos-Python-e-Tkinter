@@ -45,10 +45,10 @@ class lado_servidor():
 
         self.conexao_banco_dados()
 
-        self.cursor.execute("""
+        '''self.cursor.execute("""
 
             INSERT INTO Usuarios (Nome_usuario, Email_usuario, Senha_usuario, Confirme_senha_usuario)
-            VALUES (?,?,?,?)""", (self.nome_usuario_entrada, self.email_usuario_entrada, self.senha_usuario_entrada, self.confirme_senha_entrada))
+            VALUES (?,?,?,?)""", (self.nome_usuario_entrada, self.email_usuario_entrada, self.senha_usuario_entrada, self.confirme_senha_entrada))'''
 
         try:
             if (self.nome_usuario_entrada == "" or self.email_usuario_entrada == "" or self.senha_usuario_entrada == "" or self.confirme_senha_entrada == ""):
